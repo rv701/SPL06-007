@@ -26,7 +26,7 @@ void setup() {
   Serial.println(tmp);
 
   Serial.println("Setting pressure configuration register - 0X00");
-  i2c_eeprom_write_uint8_t(EEPROM_CHIP_ADDRESS, 0X06, 0B010010); // Weather Station Mode
+  i2c_eeprom_write_uint8_t(EEPROM_CHIP_ADDRESS, 0X06, 0B11); // Weather Station Mode
   
   Serial.println("Setting temperature configuration register - 0x80");
   i2c_eeprom_write_uint8_t(EEPROM_CHIP_ADDRESS, 0X07, 0X80); // Weather Station Mode
@@ -295,14 +295,14 @@ double get_pressure_scale_factor()
   //Serial.print("tmp_Byte: ");
   //Serial.println(tmp_Byte);
 
-  tmp_Byte = tmp_Byte >> 4; //Focus on bits 6-4
-  tmp_Byte = tmp_Byte & 0B00000111;
+  //tmp_Byte = tmp_Byte >> 4; //Focus on bits 6-4 - measurement rate
+  tmp_Byte = tmp_Byte & 0B00000111; // Focus on 2-0 oversampling rate 
   //Serial.print("tmp_Byte: ");
   //Serial.println(tmp_Byte);
 
   //tmp_Byte = 0B011;
 
-  switch (tmp_Byte) 
+  switch (tmp_Byte) // oversampling rate
   {
     case 0B000:
       k = 524288.0d;
