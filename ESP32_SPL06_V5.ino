@@ -25,11 +25,11 @@ void setup() {
   Serial.print("ID: ");
   Serial.println(tmp);
 
-  Serial.println("Setting pressure configuration register - 0X00");
-  i2c_eeprom_write_uint8_t(EEPROM_CHIP_ADDRESS, 0X06, 0B11); // Weather Station Mode
+  Serial.println("Setting pressure configuration register - 0X03");
+  i2c_eeprom_write_uint8_t(EEPROM_CHIP_ADDRESS, 0X06, 0x03); // Pressure 8x oversampling
   
-  Serial.println("Setting temperature configuration register - 0x80");
-  i2c_eeprom_write_uint8_t(EEPROM_CHIP_ADDRESS, 0X07, 0X80); // Weather Station Mode
+  Serial.println("Setting temperature configuration register - 0x83");
+  i2c_eeprom_write_uint8_t(EEPROM_CHIP_ADDRESS, 0X07, 0X83); // Temperature 8x oversampling
 
   Serial.println("Setting measurement register - 0B0111");
   i2c_eeprom_write_uint8_t(EEPROM_CHIP_ADDRESS, 0X08, 0B0111); // continuous temp and pressure measurement
@@ -168,6 +168,10 @@ void loop() {
   Serial.print(altitude,1);
   Serial.println("m");
 
+  Serial.print("altitude: ");
+  Serial.print(altitude*3.281,1);
+  Serial.println("ft");
+
 
   /*
   // calculate
@@ -239,7 +243,7 @@ double get_temperature_scale_factor()
   //Serial.print("tmp_Byte: ");
   //Serial.println(tmp_Byte);
 
-  tmp_Byte = tmp_Byte >> 4; //Focus on bits 6-4
+  //tmp_Byte = tmp_Byte >> 4; //Focus on bits 6-4
   tmp_Byte = tmp_Byte & 0B00000111;
   //Serial.print("tmp_Byte: ");
   //Serial.println(tmp_Byte);
@@ -279,7 +283,7 @@ double get_temperature_scale_factor()
     break;
   }
 
-  //Serial.print("k: ");
+  //Serial.print("Temperature k: ");
   //Serial.println(k);
 
   return k;
@@ -338,8 +342,8 @@ double get_pressure_scale_factor()
     break;
   }
 
-  Serial.print("k: ");
-  Serial.println(k);
+  //Serial.print("Pressure k: ");
+  //Serial.println(k);
 
   return k;
 }
