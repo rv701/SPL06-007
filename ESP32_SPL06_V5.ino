@@ -161,7 +161,8 @@ void loop() {
   //Serial.print("pcomp * 4: ");
   //Serial.println(pcomp,2);
 
-  double local_pressure = 1010.5; // Look up local sea level pressure on google
+  //double local_pressure = 1010.5; // Look up local sea level pressure on google
+  double local_pressure = 1009.7; // Look up local sea level pressure on google // Local pressure from airport website 8/21
   double altitude = get_altitude(pcomp,local_pressure);
   Serial.print("altitude: ");
   Serial.print(altitude,1);
@@ -477,6 +478,8 @@ int32_t get_c00()
   tmp = (tmp_MSB << 8) | tmp_LSB;
   tmp = (tmp << 4) | tmp_XLSB;
 
+  tmp = (uint32_t)tmp_MSB << 12 | (uint32_t)tmp_LSB << 4 | (uint32_t)tmp_XLSB >> 4;
+
   if(tmp & (1 << 19))
     tmp = tmp | 0XFFF00000; // Set left bits to one for 2's complement conversion of negitive number
     
@@ -514,6 +517,7 @@ int32_t get_c10()
   //Serial.print("tmp_c10: ");
   //Serial.println(tmp, BIN);
 
+  tmp = (uint32_t)tmp_MSB << 16 | (uint32_t)tmp_LSB << 8 | (uint32_t)tmp_XLSB;
 
   if(tmp & (1 << 19))
     tmp = tmp | 0XFFF00000; // Set left bits to one for 2's complement conversion of negitive number
