@@ -130,11 +130,11 @@ void loop() {
 
   Serial.print("Temperature: ");
   Serial.print(temp);
-  Serial.println("C");
+  Serial.println(" C");
   temp = (temp * 9/5) + 32;
   Serial.print("Temperature: ");
   Serial.print(temp);
-  Serial.println("F");
+  Serial.println(" F");
   
   
 
@@ -156,63 +156,28 @@ void loop() {
   Serial.print("pcomp: ");
   Serial.println(pcomp,2);
 
-  //pcomp = pcomp * 4.0d;
-  //Serial.print("pcomp scaled by 2.105: ");
-  //Serial.print("pcomp * 4: ");
-  //Serial.println(pcomp,2);
+  double pressure = pcomp / 100; // convert to mb
+  Serial.print("Measured Air Pressure: ");
+  Serial.print(pressure,2);
+  Serial.println(" mb");
 
   //double local_pressure = 1010.5; // Look up local sea level pressure on google
-  double local_pressure = 1009.7; // Look up local sea level pressure on google // Local pressure from airport website 8/21
+  double local_pressure = 1011.1; // Look up local sea level pressure on google // Local pressure from airport website 8/22
+  Serial.print("Local Airport Sea Level Pressure: ");
+  Serial.print(local_pressure,2);
+  Serial.println(" mb");
+  
   double altitude = get_altitude(pcomp,local_pressure);
   Serial.print("altitude: ");
   Serial.print(altitude,1);
-  Serial.println("m");
+  Serial.println(" m");
 
   Serial.print("altitude: ");
-  Serial.print(altitude*3.281,1);
-  Serial.println("ft");
+  Serial.print(altitude*3.281,1); // convert from meters to feet
+  Serial.println(" ft");
 
-
-  /*
-  // calculate
-  Serial.println("\nValues from external library");
-  float ftsc = (float)traw_sc;
-  float fpsc = (float)praw_sc;
-  float qua2 = (float)c10 + fpsc * ((float)c20 + fpsc * (float)c30);
-  float qua3 = ftsc * fpsc * ((float)c11 + fpsc * (float)c21);
-
-  float fp = (float)c00 + fpsc * qua2 + ftsc * (float)c01 + qua3;
-  
-  fp = fp * 2.11; // Rick's sacle factor
-  Serial.print("fp: ");
-  Serial.println(fp);
 
   
-
-  // tropospheric properties (0-11km) for standard atmosphere
-  const float T1 = 15.0f + 273.15f;       // temperature at base height in Kelvin
-  const float a  = -6.5f / 1000.0f;       // temperature gradient in degrees per metre
-  const float g  = 9.80665f;              // gravity constant in m/s/s
-  const float R  = 287.05f;               // ideal gas constant in J/kg/K
-  const float msl_pressure = 101325.0f;   // in Pa
-  float pK = fp / msl_pressure;
-  //float pK = 101325 / msl_pressure;
-
-
-  float baro_temperature = (float)c0 * 0.5f + (float)c1 * ftsc;
-  Serial.print("baro_temperature: ");
-  Serial.println(baro_temperature);
-  float baro_pressure = fp;
-  Serial.print("baro_pressure: ");
-  Serial.println(baro_pressure);
-
-
-  float baro_altitude = (((powf(pK, (-(a * R) / g))) * T1) - T1) / a;
-
-  
-  Serial.print("baro_altitude: ");
-  Serial.println(baro_altitude);
-  */
 
             
   
