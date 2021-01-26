@@ -5,6 +5,8 @@ uint8_t SPL_CHIP_ADDRESS = 0x76;
 
 void SPL_init()
 {
+	// ---- Oversampling of >8x for temperature or pressuse requires FIFO operational mode which is not implemented ---
+	// ---- Use rates of 8x or less until feature is implemented ---
 	i2c_eeprom_write_uint8_t(SPL_CHIP_ADDRESS, 0X06, 0x03);	// Pressure 8x oversampling
 
 	i2c_eeprom_write_uint8_t(SPL_CHIP_ADDRESS, 0X07, 0X83);	// Temperature 8x oversampling
