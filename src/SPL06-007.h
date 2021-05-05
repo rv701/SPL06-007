@@ -1,6 +1,6 @@
 #include "Arduino.h"
 
-void SPL_init();
+void SPL_init(uint8_t spl_address=0x76);
 
 uint8_t get_spl_id();		// Get ID Register 		0x0D
 uint8_t get_spl_prs_cfg();	// Get PRS_CFG Register	0x06
