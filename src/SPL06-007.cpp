@@ -324,6 +324,7 @@ int16_t get_c1()
 
 int32_t get_c00()
 {
+  /*
   int32_t tmp; 
   uint8_t tmp_MSB,tmp_LSB,tmp_XLSB;
   
@@ -346,10 +347,20 @@ int32_t get_c00()
     
 
   return tmp;
+  */
+  int32_t tmp;
+  uint8_t tmp_MSB,tmp_LSB,tmp_XLSB;
+
+  tmp_MSB = i2c_eeprom_read_uint8_t(SPL_CHIP_ADDRESS, 0X13);
+  tmp_LSB = i2c_eeprom_read_uint8_t(SPL_CHIP_ADDRESS, 0X14);
+  tmp_XLSB = i2c_eeprom_read_uint8_t(SPL_CHIP_ADDRESS, 0X15);
+  tmp = (tmp_MSB & 0x80 ? 0xFFF00000 : 0) | ((uint32_t)tmp_MSB << 12) | ((uint32_t)tmp_LSB << 4) | (((uint32_t)tmp_XLSB & 0xF0) >> 4);
+  return tmp;
 }
 
 int32_t get_c10()
 {
+  /*
   int32_t tmp; 
   uint8_t tmp_MSB,tmp_LSB,tmp_XLSB;
   
@@ -372,6 +383,16 @@ int32_t get_c10()
   if(tmp & (1 << 19))
     tmp = tmp | 0XFFF00000; // Set left bits to one for 2's complement conversion of negitive number
 
+  return tmp;
+  */
+  
+  int32_t tmp;
+  uint8_t tmp_MSB,tmp_LSB,tmp_XLSB;
+
+  tmp_MSB = i2c_eeprom_read_uint8_t(SPL_CHIP_ADDRESS, 0X15); // 4 bits
+  tmp_LSB = i2c_eeprom_read_uint8_t(SPL_CHIP_ADDRESS, 0X16); // 8 bits
+  tmp_XLSB = i2c_eeprom_read_uint8_t(SPL_CHIP_ADDRESS, 0X17); // 8 bits
+  tmp = (tmp_MSB & 0x8 ? 0xFFF00000 : 0) | (((uint32_t)tmp_MSB & 0x0F) << 16) | ((uint32_t)tmp_LSB << 8) | (uint32_t)tmp_XLSB;
   return tmp;
 }
 
